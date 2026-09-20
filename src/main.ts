@@ -9,7 +9,7 @@ type SessionSignal={correct:boolean;confidence:string;misconception:boolean;conc
 type State={authenticated:boolean;authMode:"login"|"signup";authName:string;authEmail:string;authPassword:string;authError:string;modal:View|null;view:View;topic:Topic;q:Q|null;answer:string;confidence:string;d:D|null;mastery:Record<string,number>;attempts:number;name:string;grade:string;goal:string;preferred_input:string;history:any[];loading:boolean;booting:boolean;map:any[];session:SessionSignal[];sessionStarted:number;sessionTarget:number;demoMode:boolean;toast:string};
 const s:State={authenticated:false,authMode:"login",authName:"",authEmail:"",authPassword:"",authError:"",modal:null,view:"dashboard",topic:"dbms",q:null,answer:"",confidence:"",d:null,mastery:{},attempts:0,name:"Student",grade:"College",goal:"Build strong understanding",preferred_input:"Text",history:[],loading:false,booting:true,map:[],session:[],sessionStarted:0,sessionTarget:3,demoMode:false,toast:""};
 const app=document.querySelector("#app")!;
-const API=(import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:8787" : window.location.origin)).replace(/\/$/, "");
+const API=(import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:8787" : "")).replace(/\/$/, "");
 const readJson = async (response: Response) => {
   const text = await response.text();
   if (!text) return null;
