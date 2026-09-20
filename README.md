@@ -1,4 +1,4 @@
-# LearnBack AI v12.2
+# LearnBack AI
 
 **LearnBack is an AI-powered adaptive learning companion that tries to understand what a student actually knows — not just whether they got a quiz question right.**
 
