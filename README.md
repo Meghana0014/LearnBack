@@ -1,536 +1,225 @@
-# LearnBack AI
+# LearnBack
 
-**LearnBack is an AI-powered adaptive learning companion that tries to understand what a student actually knows — not just whether they got a quiz question right.**
+LearnBack is a prototype adaptive learning app that tries to understand what a learner knows, not just whether an answer is right or wrong.
 
-The prototype demonstrates a complete learning loop:
+The app combines:
 
-> **Answer → Diagnose → Adapt → Re-test → Measure improvement**
+- concept-level mastery tracking
+- misconception detection
+- confidence-aware diagnosis
+- adaptive follow-up questions
+- subject-based learning paths
+- a local demo mode that works without paid AI APIs
 
+The core loop is:
 
+Answer → Diagnose → Adapt → Re-test → Measure progress
 
-## 1. What LearnBack does
+## Why this project exists
 
-Traditional learning apps usually record marks or correct/incorrect answers. LearnBack treats every answer as a **learning signal**.
+Most education tools treat quiz results as a binary outcome: correct or incorrect. LearnBack instead treats every response as a learning signal.
 
-For each response, the system can track:
+For each answer, the app can estimate:
 
-- Which concept the student is working on
-- Whether the answer is correct
-- What misconception may be present
-- How confident the student felt
-- Current concept-level mastery
-- What question or learning activity should come next
+- the concept being tested
+- whether the answer is correct
+- whether the student has a misconception
+- how confident the student feels
+- what concept should be revisited next
 
-This lets the app adapt instead of simply moving through a fixed quiz.
+This makes the learning flow more personalized than a fixed multiple-choice quiz.
 
-### Example
+## Demo example
 
-A DBMS student is asked:
+A user is asked:
 
-> **What is the purpose of a primary key?**
+> What is the purpose of a primary key?
 
-Student answer:
+The student responds:
 
-> "It connects two tables."
+> It connects two tables.
 
-LearnBack can interpret this as confusion between a **primary key** and a **foreign key**. If the student also says they are very confident, the system records a high-confidence misconception and can target that misunderstanding with a simpler explanation and a focused follow-up question.
+LearnBack can interpret this as a likely foreign-key / primary-key confusion. If the student is also highly confident, the app can flag a high-confidence misconception and select a targeted follow-up question instead of giving a random new question.
 
----
+## Features
 
-# 2. Main features
+### User authentication
 
-## 🔐 Login & Sign Up
+The app includes a local sign-up and login flow.
 
-LearnBack starts with an authentication screen instead of immediately opening a shared dashboard.
+Users can:
 
-Students can:
+- create an account
+- log in with email and password
+- keep separate learning history and mastery data
+- log out
 
-- Create an account with name, email and password
-- Log in to an existing account
-- Maintain their own learning profile
-- Log out
+This is a prototype implementation and is not meant to replace a production identity system.
 
-For this prototype, authentication is implemented locally using the Node backend and SQLite. It is suitable for a demo, not production identity management.
+### Adaptive learning sessions
 
----
+The Learn view gives a question chosen from the learner's current concept state, not a static quiz.
 
-## 🧠 Adaptive Learning Engine
+It uses:
 
-The **Learn** experience is the heart of LearnBack.
+- current concept mastery
+- recent misconceptions
+- confidence level
+- prerequisite relationships
 
-Instead of presenting a fixed sequence of questions, the system uses learning signals such as:
+The next question is chosen to repair misunderstanding or reinforce a weak concept.
 
-- Previous answers
-- Concept mastery
-- Misconceptions
-- Confidence
-- Recent attempts
-- Prerequisite relationships
+### Misconception detection
 
-The next question can therefore be targeted toward the student's current weakness.
+The app aims to detect why a response is wrong, not just that it is wrong.
 
-### Learning loop
+Examples include:
 
-1. Student receives a concept question
-2. Student answers in their own words
-3. Student reports confidence
-4. LearnBack analyzes the response
-5. The concept state is updated
-6. A targeted next question is selected
-7. The student re-tests the concept
-8. Progress appears in the student's profile
+- primary key vs foreign key confusion
+- encapsulation vs inheritance confusion
+- function misuse
+- concept misunderstanding from low confidence or high confidence
 
----
+This helps the system choose more accurate next steps.
 
-## 🎯 Misconception Detection
+### Knowledge map and mastery tracking
 
-LearnBack is not only interested in whether an answer is wrong.
+LearnBack tracks mastery at the concept level rather than using only a total score.
 
-It tries to determine **why** the answer is wrong.
+Topics included in the prototype:
 
-For example:
+- Database Systems
+  - Primary Key
+  - Foreign Key
+  - Candidate Key
+  - Normalization
+- Java OOP
+  - Encapsulation
+  - Inheritance
+  - Polymorphism
+- Python
+  - Lists
+  - Functions
+  - OOP in Python
+  - Exceptions
 
-- Primary key vs foreign key confusion
-- Confusing encapsulation with inheritance
-- Missing understanding of a prerequisite concept
-- Incorrect but partially understood explanations
+### Personal learning history and profile
 
-The detected misconception becomes a signal that can influence the next learning step.
+Each user has:
 
----
+- profile details
+- concept mastery estimates
+- a learning plan
+- recent answer history
+- session summaries
 
-## 📊 Confidence vs Correctness
+### Classroom copilot (prototype)
 
-The student can indicate how confident they are in an answer.
+The app includes a classroom-oriented view that aggregates learner signals into teacher-facing summaries such as:
 
-This creates useful combinations such as:
+- concept bottlenecks
+- students needing support
+- high-confidence misconceptions
+- intervention suggestions
 
-| Answer | Confidence | Possible interpretation |
-|---|---|---|
-| Correct | High | Concept appears well understood |
-| Correct | Low | Student may need confidence-building practice |
-| Wrong | Low | Possible uncertainty or knowledge gap |
-| Wrong | High | Possible high-confidence misconception |
+This is a lightweight prototype for classroom insight, not a full LMS.
 
-The important idea is that **confidence is treated as a learning signal, not just a quiz decoration**.
+### Voice input
 
----
+The app supports browser-based speech recognition when available in the browser.
 
-## 🗺️ Personal Knowledge Map
+### Demo mode
 
-The Knowledge Map shows learning at the **concept level** rather than only showing an overall score.
+The project includes a 60-second demo flow intended for a presentation or hackathon.
 
-It can represent concepts such as:
-🧠 Learning Intelligence
+This makes it possible to show the app without requiring a full external AI setup.
 
-LearnBack builds a continuously updated learning profile from student interactions.
+## Tech stack
 
-##  🧬 Learning Fingerprint
+- Frontend: TypeScript + Vite
+- Styling: CSS
+- Backend: Node.js
+- Database: SQLite via node:sqlite
+- Authentication: session tokens + password hashing
+- AI integration: OpenAI API (optional)
+- Voice input: browser Speech Recognition API
 
-A personalized understanding profile based on:
-
-Understanding
-Retention
-Transfer
-Confidence accuracy
-Misconception recovery
-
-The fingerprint changes as the student learns.
-
-## 🎯 Confidence Calibration
-
-LearnBack compares:
-
-Confidence vs Actual Correctness
-
-This helps identify patterns such as:
-
-Correct + confident
-Correct + uncertain
-Wrong + uncertain
-Wrong + highly confident
-
-A wrong answer with high confidence can indicate a deeper misconception.
-
-## 🧬 Misconception DNA
-
-LearnBack tracks recurring misconception patterns instead of treating every wrong answer as an isolated mistake.
-
-Example:
-
-Database Keys
-     ↓
-Primary Key ↔ Foreign Key confusion
-     ↓
-Repeated across questions
-     ↓
-Targeted recovery activity
-⏳ Forgetting Radar
-
-Previously understood concepts can be monitored over time.
-
-If performance starts dropping, LearnBack can recommend a short recovery session.
-
-## 🌍 Transfer Testing
-
-A student may know a concept in one context but struggle to apply it somewhere else.
-
-LearnBack tests:
-
-Learn Concept
-     ↓
-Practice
-     ↓
-Different Context
-     ↓
-Transfer Test
-
-Example:
-
-DBMS concept
-     ↓
-Database example
-     ↓
-E-commerce example
-     ↓
-Real-world application
-## 👥 Anonymous Peer Reasoning
-
-Students can compare their reasoning with anonymized examples from other learners.
-
-The interface focuses on:
-
-Strong reasoning
-Common confusion
-Why the reasoning works
-
-The goal is to improve understanding rather than create a social feed.
-
-## 🔄 Adaptive Learning
-
-LearnBack does not simply move to the next question after every answer.
-
-It can change the learning path based on the student's current state.
-
-Example:
-
-Wrong Answer
-     ↓
-Misconception Detected
-     ↓
-Confidence Checked
-     ↓
-Targeted Explanation
-     ↓
-Easy Recovery Question
-     ↓
-Application Question
-     ↓
-Transfer Question
-     ↓
-Mastery Updated
-### DBMS
-- Primary Key
-- Foreign Key
-- Candidate Key
-- Normalization
-
-### Java OOP
-- Encapsulation
-- Inheritance
-- Polymorphism
-
-### Python
-- Lists
-- Functions
-- Exceptions
-
-The student's mastery values are stored separately for their account.
-
----
-
-## 📚 Subject Library
-
-The current prototype includes three learning areas:
-
-### Database Systems
-Keys, relationships, normalization and common misconceptions.
-
-### Java OOP
-Object-oriented fundamentals including encapsulation, inheritance and polymorphism.
-
-### Python Foundations
-Core Python concepts including lists, functions and exceptions.
-
-Each subject can start an adaptive learning path.
-
----
-
-## 📝 3-Question Adaptive Sessions
-
-LearnBack can run a short learning session rather than making the student complete an endless quiz.
-
-A session collects multiple learning signals and ends with a session summary.
-
-The session can show:
-
-- Questions attempted
-- Correctness
-- Confidence
-- Misconceptions detected
-- Concepts targeted
-- Changes in mastery
-
-This makes the learning loop easy to demonstrate during a hackathon presentation.
-
----
-
-## 🎙️ Voice Answers
-
-The Learn screen supports browser-based speech recognition where the browser provides the required Speech Recognition API.
-
-A student can answer verbally instead of typing.
-
-The current implementation uses the browser's speech recognition capability, so support depends on the browser/device. It is intentionally lightweight and does not require a paid speech API.
-
----
-
-## ⚡ 60-Second Demo Mode
-
-The dashboard includes a quick demo flow for presentations.
-
-The demo is designed to show the core idea quickly:
-
-**Student answer → AI diagnosis → misconception → adaptive next step**
-
-There is also a sample misconception input so the hackathon presenter can reproduce the intended scenario without manually typing the same answer every time.
-
----
-
-## 🗓️ Personal Learning Plan
-
-LearnBack provides a lightweight learning plan based on the student's current learning state.
-
-The idea is not to give everyone the same timetable. The plan can prioritize concepts that need attention and guide the student toward the next useful activity.
-
----
-
-## 📖 Learning History
-
-The History view records analyzed learning signals so the system can build a longer-term understanding of the student.
-
-It can show information such as:
-
-- Concept analyzed
-- Answer correctness
-- Confidence
-- Misconception status
-- Learning summary
-- Recent learning signals
-
-### Important navigation behavior
-
-The **Start first session →** button inside History starts the actual adaptive Learn session and closes the History popup. It does not reopen the same History window.
-
----
-
-# 3. AI Classroom Copilot
-
-LearnBack v12.2 extends the student experience with a lightweight **AI Classroom Copilot**.
-
-The student side answers:
-
-> **"What should I learn next?"**
-
-The teacher side answers:
-
-> **"What should I do next for my students?"**
-
-The teacher dashboard uses aggregated learning signals to surface classroom-level actions.
-
-### Classroom overview
-
-Teachers can see signals such as:
-
-- Overall class understanding
-- Concept bottlenecks
-- Students needing additional support
-- High-confidence errors
-- Students who may be ready to advance
-
-### Misconception-based groups
-
-The system can organize students around learning needs rather than only marks, for example:
-
-- Needs Foundation
-- Misconception Recovery
-- Developing
-- Advanced
-
-### AI intervention suggestions
-
-The prototype can suggest actions such as:
-
-- Create a short intervention
-- Generate a learning activity
-- Re-teach a concept
-- Assign targeted practice
-- Work with a small group
-
-The teacher remains in control. **AI recommends; the teacher decides.**
-
-### Intervention outcome
-
-The intended loop is:
-
-**Detect problem → Intervene → Re-check → Compare before/after understanding**
-
-This connects LearnBack to classroom operations without turning it into a generic school administration system.
-
----
-
-# 4. Popup / Modal Navigation
-
-LearnBack uses a modern popup interaction for secondary areas of the application.
-
-The sidebar can open:
-
-- Overview
-- Knowledge Map
-- Classroom Copilot
-- Subjects
-- Learning Plan
-- History
-- My Profile
-
-These sections appear in a modal-style window instead of constantly replacing the main learning screen.
-
-The actual **Learn** flow remains a dedicated learning view because it contains the interactive question/session experience.
-
-The modal can be closed with the close button or **Escape** where supported.
-
----
-
-# 5. Student Profile
-
-Each account has a personal profile containing information such as:
-
-- Name
-- Grade/year
-- Learning goal
-- Preferred input mode
-- Learning history
-- Concept mastery
-- Attempts / learning signals
-
-This allows LearnBack to move from a generic demo toward a personalized learning companion.
-
----
-
-# 6. Local Database
-
-The Node backend uses **SQLite** for the prototype.
-
-The database stores information needed for the personalized experience, including:
-
-- Users
-- Authentication/session data
-- Profiles
-- Learning attempts
-- Concept mastery
-- Learning history
-- Misconception signals
-
-This means two different accounts can have different learning states instead of sharing one demo profile.
-
----
-
-# 7. AI / Demo Mode
-
-LearnBack is designed so the prototype can run **without a paid AI API**.
-
-If `OPENAI_API_KEY` is not configured, the application uses its local/demo learning engine for the supported scenarios.
-
-If an OpenAI API key is configured, the backend can use the configured model for response analysis.
-
-> **Note:** API model names and availability depend on the API account/environment. Do not assume the example model name in `.env.example` is available for every account.
-
----
-
-# 8. Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | TypeScript + Vite |
-| Styling | CSS |
-| Backend | Node.js |
-| Database | Built-in SQLite via node:sqlite |
-| Authentication | Node crypto + session tokens |
-| AI integration | OpenAI API optional |
-| Voice input | Browser Speech Recognition API |
-| Development | VS Code / local browser |
-
----
-
-# 9. Project Structure
+## Project structure
 
 ```text
-LearnBack_AI_v12_2/
-│
+LearnBack/
+├── .env.example
 ├── index.html
 ├── package.json
-├── tsconfig.json
-├── .env.example
+├── package-lock.json
 ├── README.md
-│
+├── tsconfig.json
+├── vercel.json
+├── learnback.db
 ├── src/
 │   ├── main.ts
 │   └── style.css
-│
-└── server/
-    └── server.mjs
+├── server/
+│   └── server.mjs
+└── dist/
 ```
 
 ### `src/main.ts`
 
-Contains the main frontend application logic, including:
+Contains the frontend app logic, including:
 
-- Authentication UI
-- Dashboard
-- Learning sessions
-- Adaptive question flow
-- Knowledge map
-- History
-- Learning plan
-- Profile
-- Subject library
-- Classroom Copilot
-- Modal navigation
-- Voice input
-- Demo mode
+- auth flow
+- dashboard
+- learn session screen
+- knowledge map
+- subject navigation
+- profile and history views
+- classroom copilot UI
+- adaptive question logic
+- demo behavior
 
 ### `src/style.css`
 
-Contains the visual system, responsive layout, cards, buttons, modals, animations and mobile behavior.
+Contains the app styling, cards, modal layout, charts, session UI, and responsive behavior.
 
 ### `server/server.mjs`
 
-Provides the local API and database layer for:
+Contains the local backend API that provides:
 
-- Sign up
-- Login
-- Logout
-- Profile data
-- Learning attempts
-- Mastery
-- History
-- Question selection
-- Answer analysis
-- Reset/demo data
+- sign up / login / logout
+- session management
+- profile updates
+- learning attempts storage
+- concept mastery updates
+- adaptive question selection
+- answer analysis
+- demo fallback logic
 
-# 12. Optional AI Configuration
+## Prerequisites
 
-Copy `.env.example` to `.env` and configure an API key if you want to connect an available OpenAI model.
+- Node.js 18+
+- npm
+
+## Installation
+
+1. Clone the repository.
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+## Environment configuration
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Then set your values if needed.
+
+Example:
 
 ```env
 OPENAI_API_KEY=your_api_key_here
@@ -538,94 +227,84 @@ OPENAI_MODEL=your_available_model
 PORT=8787
 ```
 
-For the hackathon demo, **you can leave the API key empty** and use the local/demo learning engine.
+If `OPENAI_API_KEY` is not set, the app falls back to demo/local diagnosis behavior.
 
----
+## Running the app
 
-# 13. Suggested Hackathon Demo Flow
+Start both the backend and frontend together:
 
-A short presentation can follow this sequence:
+```bash
+npm run dev:all
+```
 
-### 1. Sign up
-Create a student account.
+This runs:
 
-### 2. Start adaptive learning
-Choose DBMS / Database Systems.
+- the Vite frontend on the default Vite port
+- the Node backend on port 8787
 
-### 3. Give a misconception answer
-Answer the primary-key question with something like:
+You can also run them separately:
 
-> "It connects two tables."
+```bash
+npm run server
+npm run dev
+```
 
-### 4. Select high confidence
-Choose **Very confident**.
+## Demo flow
 
-### 5. Show the diagnosis
-Explain that LearnBack can distinguish a normal wrong answer from a high-confidence misconception.
+A typical quick demo is:
 
-### 6. Show the next question
-The system targets the suspected concept instead of simply giving another random quiz question.
+1. Sign up for an account
+2. Choose a subject such as Database Systems
+3. Answer a concept question in natural language
+4. Select a confidence level
+5. View the diagnosis and adaptive next step
+6. See the knowledge map update
+7. Open the classroom view to show aggregated insight
 
-### 7. Show the Knowledge Map
-Demonstrate concept-level mastery and learning signals.
+## AI mode vs demo mode
 
-### 8. Show Classroom Copilot
-Switch to the teacher view and demonstrate how individual learning signals can become classroom intervention suggestions.
+The app supports two modes:
 
-### 9. Close with the core idea
+- Demo mode: uses the built-in local engine when no OpenAI API key is configured
+- AI mode: uses the configured OpenAI model for diagnosis when an API key is available
 
-> **LearnBack doesn't just ask whether a student is right. It learns what the student understands and decides what they should learn next.**
+The local engine includes a concept taxonomy and misconception heuristics for the supported demo subjects.
 
----
+## Limitations
 
-# 14. What makes the prototype different
-
-LearnBack is intentionally focused on the **adaptive learning loop** rather than trying to become another all-purpose AI chatbot.
-
-Its main product ideas are:
-
-1. **Concept-level understanding** instead of only total marks
-2. **Misconception detection** instead of only right/wrong grading
-3. **Confidence-aware diagnosis**
-4. **Adaptive follow-up questions**
-5. **Personal learning history**
-6. **Learning recovery through targeted re-testing**
-7. **Teacher actions based on aggregated learning signals**
-
----
-
-# 15. Current Prototype Limitations
-
-This is a hackathon prototype, not a production education platform.
+This is a prototype and not a production learning platform.
 
 Current limitations include:
 
-- Local SQLite database
-- Prototype authentication rather than production identity/security infrastructure
-- Limited subject/concept library
-- Local/demo diagnosis for supported scenarios when no API key is configured
-- Browser-dependent voice recognition
-- Classroom data is prototype-level rather than a full school/LMS integration
-- No production deployment configuration
-- No formal clinical/educational efficacy validation
+- local SQLite storage only
+- prototype authentication rather than enterprise-grade identity/security
+- limited subject and concept coverage
+- browser-dependent voice input
+- demo-level classroom analytics
+- no real production deployment configuration
+- no formal education validation or experimentation
 
-These limitations are intentional so the core adaptive-learning concept can be demonstrated clearly and quickly.
+## Roadmap ideas
 
----
+Possible future work includes:
 
-# 16. Future Roadmap
+- broader subject coverage
+- deeper knowledge tracing models
+- more robust misconception taxonomies
+- improved confidence calibration
+- multimodal learning input
+- teacher assignment workflows
+- LMS and classroom integration
 
-Possible next steps include:
 
-- More subjects and larger concept graphs
-- Better misconception taxonomies
-- Formal knowledge tracing such as Bayesian Knowledge Tracing / Deep Knowledge Tracing
-- Better confidence calibration analytics
-- Multimodal answers using handwriting/camera input
-- More advanced voice interaction
-- Teacher assignment workflows
-- Real classroom/LMS integrations
-- Supabase/PostgreSQL for production-scale data
+## License
+
+This project does not currently declare a license in the repository. Check with the project owner before reuse or redistribution.
+
+## Summary
+
+LearnBack is a focused prototype for adaptive learning. It demonstrates a practical idea: instead of treating a wrong answer as a simple fail, the system tries to infer what the learner may actually understand and uses that insight to decide what to teach next.
+now- Supabase/PostgreSQL for production-scale data
 - Android/iQOO implementation using Kotlin and Jetpack Compose
 - Offline/on-device learning intelligence where practical
 - Evaluation using labeled student-answer datasets and measurable learning outcomes
