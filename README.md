@@ -121,7 +121,114 @@ The important idea is that **confidence is treated as a learning signal, not jus
 The Knowledge Map shows learning at the **concept level** rather than only showing an overall score.
 
 It can represent concepts such as:
+🧠 Learning Intelligence
 
+LearnBack builds a continuously updated learning profile from student interactions.
+
+##  🧬 Learning Fingerprint
+
+A personalized understanding profile based on:
+
+Understanding
+Retention
+Transfer
+Confidence accuracy
+Misconception recovery
+
+The fingerprint changes as the student learns.
+
+## 🎯 Confidence Calibration
+
+LearnBack compares:
+
+Confidence vs Actual Correctness
+
+This helps identify patterns such as:
+
+Correct + confident
+Correct + uncertain
+Wrong + uncertain
+Wrong + highly confident
+
+A wrong answer with high confidence can indicate a deeper misconception.
+
+## 🧬 Misconception DNA
+
+LearnBack tracks recurring misconception patterns instead of treating every wrong answer as an isolated mistake.
+
+Example:
+
+Database Keys
+     ↓
+Primary Key ↔ Foreign Key confusion
+     ↓
+Repeated across questions
+     ↓
+Targeted recovery activity
+⏳ Forgetting Radar
+
+Previously understood concepts can be monitored over time.
+
+If performance starts dropping, LearnBack can recommend a short recovery session.
+
+## 🌍 Transfer Testing
+
+A student may know a concept in one context but struggle to apply it somewhere else.
+
+LearnBack tests:
+
+Learn Concept
+     ↓
+Practice
+     ↓
+Different Context
+     ↓
+Transfer Test
+
+Example:
+
+DBMS concept
+     ↓
+Database example
+     ↓
+E-commerce example
+     ↓
+Real-world application
+## 👥 Anonymous Peer Reasoning
+
+Students can compare their reasoning with anonymized examples from other learners.
+
+The interface focuses on:
+
+Strong reasoning
+Common confusion
+Why the reasoning works
+
+The goal is to improve understanding rather than create a social feed.
+
+## 🔄 Adaptive Learning
+
+LearnBack does not simply move to the next question after every answer.
+
+It can change the learning path based on the student's current state.
+
+Example:
+
+Wrong Answer
+     ↓
+Misconception Detected
+     ↓
+Confidence Checked
+     ↓
+Targeted Explanation
+     ↓
+Easy Recovery Question
+     ↓
+Application Question
+     ↓
+Transfer Question
+     ↓
+Mastery Updated
 ### DBMS
 - Primary Key
 - Foreign Key
