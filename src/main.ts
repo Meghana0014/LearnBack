@@ -53,36 +53,82 @@ function peerReasoning(concept:string){
   return `<section class="peer-reasoning panel"><div class="peer-head"><div><small>ANONYMOUS PEER REASONING</small><h3>How other learners approached this</h3><p>Names and profiles stay hidden. Compare the reasoning, not the person.</p></div><span class="peer-lock">🔒 Anonymous</span></div><div class="peer-grid">${peers.map((item,i)=>`<article class="peer-card"><div class="peer-card-top"><span class="peer-avatar">A${i+1}</span><span class="peer-label">Anonymous learner</span><span class="peer-signal ${item.signal.includes("Common")?"warn":item.signal.includes("Partially")||item.signal.includes("Partial")?"mid":"good"}">${item.signal}</span></div><p class="peer-answer">“${item.reasoning}”</p><button class="peer-notice" data-peer="${i}">Notice the reasoning →</button><div class="peer-note" id="peer-note-${i}" hidden>${item.note}</div></article>`).join("")}</div><div class="peer-reflect"><div><b>What did you notice?</b><span>Use another learner's reasoning to strengthen your own explanation.</span></div><button class="peer-reflect-btn" data-peer-reflect>Revise my reasoning →</button></div></section>`;
 }
 function landingPage(){return `<div class="lp" id="landing-shell">
+
+  <!-- ── Layer 0: star canvas ── -->
   <canvas class="lp-stars" id="landing-particles"></canvas>
+
+  <!-- ── Layer 1: large floating cosmic spheres ── -->
   <div class="lp-sphere lp-s1"></div>
   <div class="lp-sphere lp-s2"></div>
   <div class="lp-sphere lp-s3"></div>
   <div class="lp-sphere lp-s4"></div>
   <div class="lp-sphere lp-s5"></div>
   <div class="lp-sphere lp-s6"></div>
+  <div class="lp-sphere lp-s7"></div>
+
+  <!-- ── Layer 2: subtle grid ── -->
   <div class="lp-grid-bg"></div>
+
+  <!-- ── Layer 3: bottom wave glows ── -->
   <div class="lp-waves-wrap">
-    <svg viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="lp-wave lp-wave-1" d="M0,100 C200,160 400,40 720,100 C1040,160 1240,40 1440,100 L1440,180 L0,180 Z"/>
-      <path class="lp-wave lp-wave-2" d="M0,130 C280,70 560,170 840,120 C1080,80 1300,150 1440,120 L1440,180 L0,180 Z"/>
-      <path class="lp-wave lp-wave-3" d="M0,152 C360,122 620,178 920,145 C1150,118 1360,162 1440,150 L1440,180 L0,180 Z"/>
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="rgba(120,40,220,0)"/>
+          <stop offset="30%"  stop-color="rgba(160,60,255,0.28)"/>
+          <stop offset="70%"  stop-color="rgba(130,50,240,0.22)"/>
+          <stop offset="100%" stop-color="rgba(120,40,220,0)"/>
+        </linearGradient>
+        <linearGradient id="wg2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="rgba(100,30,200,0)"/>
+          <stop offset="40%"  stop-color="rgba(180,80,255,0.18)"/>
+          <stop offset="60%"  stop-color="rgba(140,60,240,0.14)"/>
+          <stop offset="100%" stop-color="rgba(100,30,200,0)"/>
+        </linearGradient>
+        <linearGradient id="wg3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="rgba(80,20,160,0)"/>
+          <stop offset="50%"  stop-color="rgba(120,50,220,0.12)"/>
+          <stop offset="100%" stop-color="rgba(80,20,160,0)"/>
+        </linearGradient>
+      </defs>
+      <path class="lp-wave lp-wave-1" fill="url(#wg1)" d="M0,110 C240,180 480,40 800,110 C1120,180 1320,50 1440,110 L1440,220 L0,220 Z"/>
+      <path class="lp-wave lp-wave-2" fill="url(#wg2)" d="M0,145 C300,80  600,190 900,135 C1120,90 1330,165 1440,135 L1440,220 L0,220 Z"/>
+      <path class="lp-wave lp-wave-3" fill="url(#wg3)" d="M0,168 C380,138 660,195 960,160 C1160,132 1370,178 1440,165 L1440,220 L0,220 Z"/>
     </svg>
   </div>
+
+  <!-- ── Nav ── -->
   <nav class="lp-nav">
     <div class="lp-brand">
       <span class="lp-brand-icon">L</span>
-      <div><strong>LearnBack</strong><small>adaptive learning</small></div>
+      <div>
+        <strong>LearnBack</strong>
+        <small>adaptive learning</small>
+      </div>
     </div>
     <span class="lp-ai-pill">✦ AI-Powered</span>
   </nav>
+
+  <!-- ── Hero ── -->
   <div class="lp-hero">
+
+    <!-- LEFT -->
     <div class="lp-left">
-      <div class="lp-kicker-wrap"><span class="lp-kicker">Adaptive • Intelligent • Personal</span></div>
+
+      <div class="lp-kicker-wrap">
+        <span class="lp-kicker">
+          <span class="lp-kicker-dot"></span>
+          Adaptive &nbsp;•&nbsp; Intelligent &nbsp;•&nbsp; Personal
+        </span>
+      </div>
+
       <h1 class="lp-h1">
         <span class="lp-h1-line lp-h1-l1">Learn Smarter.</span>
         <span class="lp-h1-line lp-h1-l2"><span class="lp-grad">Remember</span> Forever.</span>
       </h1>
+
       <p class="lp-desc">Your AI-powered adaptive learning companion that understands you, personalizes your learning, and helps you master anything.</p>
+
       <div class="lp-phrase-row">
         <span class="lp-phrase-dot"></span>
         <div class="lp-phrase-track" id="landing-feature-slider">
@@ -91,52 +137,258 @@ function landingPage(){return `<div class="lp" id="landing-shell">
           <span class="lp-phrase">Grow continuously.</span>
         </div>
       </div>
-      <button class="lp-cta" id="landing-cta">
+
+      <button class="lp-cta" id="landing-cta" aria-label="Start Your Study Journey">
+        <span class="lp-cta-glow"></span>
         <span class="lp-cta-bg"></span>
+        <span class="lp-cta-shimmer"></span>
         <span class="lp-cta-text">Start Your Study Journey</span>
-        <span class="lp-cta-arr">→</span>
+        <span class="lp-cta-arr" aria-hidden="true">→</span>
       </button>
+
       <div class="lp-feat-cards">
-        <div class="lp-fc"><span class="lp-fc-icon">🧠</span><strong>Adaptive Learning</strong><small>Personalized for you</small></div>
-        <div class="lp-fc"><span class="lp-fc-icon">⚡</span><strong>Smart Recall</strong><small>AI-powered memory</small></div>
-        <div class="lp-fc"><span class="lp-fc-icon">◎</span><strong>Concept Mastery</strong><small>Track &amp; improve</small></div>
-        <div class="lp-fc"><span class="lp-fc-icon">🎯</span><strong>Confidence Boost</strong><small>Learn with clarity</small></div>
+        <div class="lp-fc">
+          <span class="lp-fc-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.66Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.66Z"/></svg>
+          </span>
+          <strong>Adaptive Learning</strong>
+          <small>Personalized for you</small>
+        </div>
+        <div class="lp-fc">
+          <span class="lp-fc-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <strong>Smart Recall</strong>
+          <small>AI-powered memory</small>
+        </div>
+        <div class="lp-fc">
+          <span class="lp-fc-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+          </span>
+          <strong>Concept Mastery</strong>
+          <small>Track &amp; improve</small>
+        </div>
+        <div class="lp-fc">
+          <span class="lp-fc-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+          <strong>Confidence Boost</strong>
+          <small>Learn with clarity</small>
+        </div>
       </div>
     </div>
+
+    <!-- RIGHT: demo card -->
     <div class="lp-right">
       <div class="lp-demo-card">
+
+        <!-- Card chrome header -->
         <div class="lp-demo-top">
-          <span class="lp-demo-dot lp-dr"></span><span class="lp-demo-dot lp-dy"></span><span class="lp-demo-dot lp-dg"></span>
+          <span class="lp-demo-dot lp-dr"></span>
+          <span class="lp-demo-dot lp-dy"></span>
+          <span class="lp-demo-dot lp-dg"></span>
           <span class="lp-demo-lbl">✦ See LearnBack in Action</span>
         </div>
-        <div class="lp-demo-body" id="lp-demo-reel">
-          <div class="lp-screen lp-screen-active" data-screen="0">
-            <div class="lp-preview"><div class="lp-sb"><div class="lp-sb-logo">L</div><div class="lp-sb-links"><span class="lp-sb-active"></span><span></span><span></span><span></span><span></span></div></div><div class="lp-pm"><div class="lp-pm-hdr"><div><div class="lp-xs-tag">LEARNING OVERVIEW</div><div class="lp-sm-h">Good to see you, Rahul.</div></div><div class="lp-ring-xs"><span>74%</span></div></div><div class="lp-4s"><div class="lp-si"><span>42</span><small>Signals</small></div><div class="lp-si"><span>7</span><small>Concepts</small></div><div class="lp-si lp-si-a"><span>74%</span><small>Mastery</small></div><div class="lp-si lp-si-w"><span>3</span><small>Errors</small></div></div><div class="lp-2col"><div class="lp-mp"><div class="lp-ptag">KNOWLEDGE MAP</div><div class="lp-brow" style="--w:82%"><span>Primary Key</span><em></em></div><div class="lp-brow" style="--w:55%"><span>Foreign Key</span><em></em></div><div class="lp-brow lp-brow-r" style="--w:38%"><span>Polymorphism</span><em></em></div></div><div class="lp-mp lp-mp-i"><div class="lp-ptag">AI INSIGHT</div><div class="lp-star-xs">✦</div><div class="lp-ins-txt">3 high-confidence errors to revisit.</div><div class="lp-mini-chip">Answer → Diagnose → Adapt</div></div></div></div></div>
-          </div>
-          <div class="lp-screen" data-screen="1">
-            <div class="lp-qscreen"><div class="lp-qhdr"><span class="lp-qtag">ADAPTIVE QUESTION</span><span class="lp-qlvl">Level 1 · Personalized</span></div><div class="lp-qtxt">What is the purpose of a primary key in a database table?</div><div class="lp-qhint">Explain it in your own words.</div><div class="lp-qbox"><span id="lp-typing"></span><span class="lp-qcursor" id="lp-cursor">|</span></div><div class="lp-confrow"><span class="lp-cl">Confidence:</span><span class="lp-cb">Not sure</span><span class="lp-cb">Somewhat</span><span class="lp-cb lp-cb-on">Very confident</span></div></div>
-          </div>
-          <div class="lp-screen" data-screen="2">
-            <div class="lp-dscreen"><div class="lp-dalert"><span class="lp-dico">!</span><div><div class="lp-dtag">MISCONCEPTION DETECTED</div><div class="lp-dtit">Primary key confused with foreign key.</div></div></div><div class="lp-dpipe"><div class="lp-ds lp-ds-ok"><span>1</span><b>Captured</b></div><div class="lp-da">→</div><div class="lp-ds lp-ds-ok"><span>2</span><b>Diagnosed</b></div><div class="lp-da">→</div><div class="lp-ds lp-ds-on"><span>3</span><b>Adapting</b></div></div><div class="lp-2col"><div class="lp-mp"><div class="lp-ptag">SIGNAL</div><div class="lp-dr-row"><span>Correct</span><b class="lp-red">Needs work</b></div><div class="lp-dr-row"><span>Confidence</span><b class="lp-red">Very confident</b></div><div class="lp-dr-row"><span>Misconception</span><b class="lp-red">pk_fk</b></div></div><div class="lp-mp lp-mp-r"><div class="lp-ptag">NEXT ACTION</div><div class="lp-rec">Targeted recovery question selected.</div><div class="lp-mbar"><span>Primary Key</span><div class="lp-mtrack"><div class="lp-mfill" style="--from:62%;--to:48%"></div></div><span class="lp-red">62%→48%</span></div></div></div></div>
-          </div>
-          <div class="lp-screen" data-screen="3">
-            <div class="lp-kscreen"><div class="lp-khdr"><div><div class="lp-xs-tag">CONCEPT GRAPH</div><div class="lp-sm-h">Your knowledge map</div></div><div class="lp-ktot">74%<small>overall</small></div></div><div class="lp-kgraph"><div class="lp-knode lp-kn-s" style="left:14%;top:42%"><span>82%</span><b>Primary Key</b></div><div class="lp-knode lp-kn-d" style="left:41%;top:24%"><span>55%</span><b>Foreign Key</b></div><div class="lp-knode lp-kn-w" style="left:67%;top:44%"><span>38%</span><b>Polymorphism</b></div><div class="lp-knode lp-kn-d" style="left:29%;top:68%"><span>61%</span><b>Normalization</b></div><div class="lp-kline" style="left:19%;top:44%;width:23%;transform:rotate(-10deg)"></div><div class="lp-kline" style="left:45%;top:35%;width:23%;transform:rotate(12deg)"></div></div><div class="lp-kleg"><span class="lp-ks">● Strong</span><span class="lp-kd">● Developing</span><span class="lp-kw">● Needs work</span></div></div>
-          </div>
-        </div>
-        <div class="lp-dots" id="lp-screen-dots">
-          <span class="lp-dot active" data-dot="0"></span>
-          <span class="lp-dot" data-dot="1"></span>
-          <span class="lp-dot" data-dot="2"></span>
-          <span class="lp-dot" data-dot="3"></span>
-        </div>
+
+        <!-- Screen label (top-center) -->
         <div class="lp-scr-lbl" id="lp-screen-label">Dashboard Overview</div>
-        <div class="lp-demo-foot"><span>🔒 Private</span><span>⚡ Instant</span><span>🎯 Adaptive</span></div>
-      </div>
-    </div>
+
+        <!-- Demo reel -->
+        <div class="lp-demo-body" id="lp-demo-reel">
+
+          <!-- Screen 0: Dashboard overview -->
+          <div class="lp-screen lp-screen-active" data-screen="0">
+            <div class="lp-preview">
+              <div class="lp-sb">
+                <div class="lp-sb-logo">L</div>
+                <div class="lp-sb-links">
+                  <span class="lp-sb-active"></span>
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+              <div class="lp-pm">
+                <div class="lp-pm-hdr">
+                  <div>
+                    <div class="lp-xs-tag">LEARNING OVERVIEW</div>
+                    <div class="lp-sm-h">Good to see you, Rahul.</div>
+                  </div>
+                  <div class="lp-ring-xs"><span>74%</span></div>
+                </div>
+                <div class="lp-4s">
+                  <div class="lp-si"><span>42</span><small>Signals</small></div>
+                  <div class="lp-si"><span>7</span><small>Concepts</small></div>
+                  <div class="lp-si lp-si-a"><span>74%</span><small>Mastery</small></div>
+                  <div class="lp-si lp-si-w"><span>3</span><small>Errors</small></div>
+                </div>
+                <div class="lp-2col">
+                  <div class="lp-mp">
+                    <div class="lp-ptag">KNOWLEDGE MAP</div>
+                    <div class="lp-brow" style="--w:82%"><span>Primary Key</span><em></em></div>
+                    <div class="lp-brow" style="--w:55%"><span>Foreign Key</span><em></em></div>
+                    <div class="lp-brow lp-brow-r" style="--w:38%"><span>Polymorphism</span><em></em></div>
+                  </div>
+                  <div class="lp-mp lp-mp-i">
+                    <div class="lp-ptag">AI INSIGHT</div>
+                    <div class="lp-star-xs">✦</div>
+                    <div class="lp-ins-txt">3 high-confidence errors to revisit.</div>
+                    <div class="lp-mini-chip">Answer → Diagnose → Adapt</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 1: Adaptive question -->
+          <div class="lp-screen" data-screen="1">
+            <div class="lp-qscreen">
+              <div class="lp-qhdr">
+                <span class="lp-qtag">ADAPTIVE QUESTION</span>
+                <span class="lp-qlvl">Level 1 · Personalized</span>
+              </div>
+              <div class="lp-qtxt">What is the purpose of a primary key in a database table?</div>
+              <div class="lp-qhint">Explain it in your own words.</div>
+              <div class="lp-qbox">
+                <span id="lp-typing"></span>
+                <span class="lp-qcursor" id="lp-cursor">|</span>
+              </div>
+              <div class="lp-confrow">
+                <span class="lp-cl">Confidence:</span>
+                <span class="lp-cb">Not sure</span>
+                <span class="lp-cb">Somewhat</span>
+                <span class="lp-cb lp-cb-on">Very confident</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 2: Diagnosis -->
+          <div class="lp-screen" data-screen="2">
+            <div class="lp-dscreen">
+              <div class="lp-dalert">
+                <span class="lp-dico">!</span>
+                <div>
+                  <div class="lp-dtag">MISCONCEPTION DETECTED</div>
+                  <div class="lp-dtit">Primary key confused with foreign key.</div>
+                </div>
+              </div>
+              <div class="lp-dpipe">
+                <div class="lp-ds lp-ds-ok"><span>1</span><b>Captured</b></div>
+                <div class="lp-da">→</div>
+                <div class="lp-ds lp-ds-ok"><span>2</span><b>Diagnosed</b></div>
+                <div class="lp-da">→</div>
+                <div class="lp-ds lp-ds-on"><span>3</span><b>Adapting</b></div>
+              </div>
+              <div class="lp-2col">
+                <div class="lp-mp">
+                  <div class="lp-ptag">SIGNAL</div>
+                  <div class="lp-dr-row"><span>Correct</span><b class="lp-red">Needs work</b></div>
+                  <div class="lp-dr-row"><span>Confidence</span><b class="lp-red">Very confident</b></div>
+                  <div class="lp-dr-row"><span>Misconception</span><b class="lp-red">pk_fk</b></div>
+                </div>
+                <div class="lp-mp lp-mp-r">
+                  <div class="lp-ptag">NEXT ACTION</div>
+                  <div class="lp-rec">Targeted recovery question selected.</div>
+                  <div class="lp-mbar">
+                    <span>Primary Key</span>
+                    <div class="lp-mtrack"><div class="lp-mfill" style="--from:62%;--to:48%"></div></div>
+                    <span class="lp-red">62%→48%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 3: Knowledge map -->
+          <div class="lp-screen" data-screen="3">
+            <div class="lp-kscreen">
+              <div class="lp-khdr">
+                <div>
+                  <div class="lp-xs-tag">CONCEPT GRAPH</div>
+                  <div class="lp-sm-h">Your knowledge map</div>
+                </div>
+                <div class="lp-ktot">74%<small>overall</small></div>
+              </div>
+              <div class="lp-kgraph">
+                <div class="lp-knode lp-kn-s" style="left:14%;top:42%"><span>82%</span><b>Primary Key</b></div>
+                <div class="lp-knode lp-kn-d" style="left:42%;top:22%"><span>55%</span><b>Foreign Key</b></div>
+                <div class="lp-knode lp-kn-w" style="left:68%;top:46%"><span>38%</span><b>Polymorphism</b></div>
+                <div class="lp-knode lp-kn-d" style="left:30%;top:70%"><span>61%</span><b>Normalization</b></div>
+                <div class="lp-kline" style="left:19%;top:44%;width:24%;transform:rotate(-11deg)"></div>
+                <div class="lp-kline" style="left:46%;top:34%;width:24%;transform:rotate(13deg)"></div>
+              </div>
+              <div class="lp-kleg">
+                <span class="lp-ks">● Strong</span>
+                <span class="lp-kd">● Developing</span>
+                <span class="lp-kw">● Needs work</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.lp-demo-body -->
+
+        <!-- Navigation dots -->
+        <div class="lp-dots" id="lp-screen-dots" role="tablist" aria-label="Demo screens">
+          <button class="lp-dot active" data-dot="0" role="tab" aria-selected="true"  aria-label="Dashboard Overview"></button>
+          <button class="lp-dot" data-dot="1" role="tab" aria-selected="false" aria-label="Adaptive Question"></button>
+          <button class="lp-dot" data-dot="2" role="tab" aria-selected="false" aria-label="AI Diagnosis"></button>
+          <button class="lp-dot" data-dot="3" role="tab" aria-selected="false" aria-label="Knowledge Map"></button>
+        </div>
+
+        <!-- Footer badges -->
+        <div class="lp-demo-foot">
+          <span>🔒 Private</span>
+          <span>⚡ Instant</span>
+          <span>🎯 Adaptive</span>
+        </div>
+
+      </div><!-- /.lp-demo-card -->
+    </div><!-- /.lp-right -->
+
+  </div><!-- /.lp-hero -->
+
+  <!-- Scroll indicator -->
+  <div class="lp-scroll-ind" aria-hidden="true">
+    <span>Scroll to explore</span>
+    <div class="lp-scroll-arr">↓</div>
   </div>
-  <div class="lp-scroll-ind"><span>Scroll to explore</span><div class="lp-scroll-arr">↓</div></div>
+
 </div>`}
-function authScreen(){return `<div class="auth-shell"><div class="auth-brand"><b class="logo">L</b><div><strong>LearnBack</strong><small>adaptive learning</small></div></div><div class="auth-card"><div class="auth-kicker">YOUR LEARNING SPACE</div><h1>${s.authMode==="login"?"Welcome back.":"Create your learning profile."}</h1><p>${s.authMode==="login"?"Sign in to continue with your personal knowledge map and learning history.":"Start a personal learning journey. Your progress stays linked to your account."}</p>${s.authError?`<div class="auth-error">${s.authError}</div>`:""}${s.authMode==="signup"?`<label class="auth-field"><span>Your name</span><input id="auth-name" placeholder="e.g. Rahul" value="${s.authName}"></label>`:""}<label class="auth-field"><span>Email</span><input id="auth-email" type="email" placeholder="you@example.com" value="${s.authEmail}"></label><label class="auth-field"><span>Password</span><input id="auth-password" type="password" placeholder="${s.authMode==="signup"?"At least 6 characters":"Your password"}" value="${s.authPassword}"></label>${s.authMode==="signup"?`<div class="auth-note">Your account unlocks a separate profile, mastery map and history.</div>`:""}<button class="primary auth-submit" id="auth-submit">${s.authMode==="login"?"Log in →":"Create account →"}</button><div class="auth-switch">${s.authMode==="login"?`New to LearnBack? <button data-auth-switch="signup">Create an account</button>`:`Already have an account? <button data-auth-switch="login">Log in</button>`}</div></div><div class="auth-foot">LearnBack • Understand. Adapt. Improve.</div></div>`}
+function authScreen(){return `<div class="auth-shell">
+  <!-- cosmic spheres -->
+  <div class="auth-sphere auth-s1"></div>
+  <div class="auth-sphere auth-s2"></div>
+  <div class="auth-sphere auth-s3"></div>
+  <div class="auth-sphere auth-s4"></div>
+  <!-- grid -->
+  <div class="auth-grid-bg"></div>
+  <!-- stars canvas -->
+  <canvas class="auth-stars" id="auth-particles"></canvas>
+
+  <!-- brand top-left -->
+  <div class="auth-brand">
+    <span class="auth-brand-icon">L</span>
+    <div><strong>LearnBack</strong><small>adaptive learning</small></div>
+  </div>
+
+  <!-- pill top-right -->
+  <span class="auth-ai-pill">✦ AI-Powered</span>
+
+  <!-- card -->
+  <div class="auth-card">
+    <div class="auth-card-glow"></div>
+    <div class="auth-kicker">${s.authMode==="login"?"WELCOME BACK":"YOUR LEARNING SPACE"}</div>
+    <h1>${s.authMode==="login"?"Sign in to LearnBack.":"Create your profile."}</h1>
+    <p>${s.authMode==="login"?"Continue with your personal knowledge map and learning history.":"Start a personal learning journey. Your progress stays linked to your account."}</p>
+    ${s.authError?`<div class="auth-error">${s.authError}</div>`:""}
+    ${s.authMode==="signup"?`<label class="auth-field"><span>Your name</span><input id="auth-name" placeholder="e.g. Rahul" value="${s.authName}" autocomplete="name"></label>`:""}
+    <label class="auth-field"><span>Email</span><input id="auth-email" type="email" placeholder="you@example.com" value="${s.authEmail}" autocomplete="email"></label>
+    <label class="auth-field"><span>Password</span><input id="auth-password" type="password" placeholder="${s.authMode==="signup"?"At least 6 characters":"Your password"}" value="${s.authPassword}" autocomplete="${s.authMode==="signup"?"new-password":"current-password"}"></label>
+    ${s.authMode==="signup"?`<div class="auth-note">Your account unlocks a separate profile, mastery map and history.</div>`:""}
+    <button class="auth-submit" id="auth-submit">${s.authMode==="login"?"Log in →":"Create account →"}</button>
+    <div class="auth-switch">${s.authMode==="login"?`New to LearnBack? <button data-auth-switch="signup">Create an account</button>`:`Already have an account? <button data-auth-switch="login">Log in</button>`}</div>
+  </div>
+
+  <div class="auth-foot">LearnBack • Understand. Adapt. Improve.</div>
+</div>`}
 async function authSubmit(){s.authError="";const email=(document.querySelector<HTMLInputElement>("#auth-email")?.value||"").trim();const password=document.querySelector<HTMLInputElement>("#auth-password")?.value||"";const name=document.querySelector<HTMLInputElement>("#auth-name")?.value.trim()||"";s.authEmail=email;s.authPassword=password;s.authName=name;if(s.authMode==="signup"&&name.length<2){s.authError="Please enter your name.";render();return}if(!/^\S+@\S+\.\S+$/.test(email)){s.authError="Please enter a valid email.";render();return}if(password.length<6){s.authError="Password must be at least 6 characters.";render();return}try{const r=await fetch(`${API}/api/${s.authMode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(s.authMode==="signup"?{name,email,password}:{email,password})});const data=await readJson(r);if(!r.ok)throw new Error((data && data.error) || "Authentication failed");localStorage.setItem("learnback_session",data.token);s.authenticated=true;s.authError="";s.authPassword="";s.landing=true;await boot(true)}catch(e:any){s.authError=e.message||"Could not sign in.";render()}}
 function header(label:string,title:string,action:string,v:View,target?:View){const dest=target||v;const attr=dest==="learn"?`data-v="${dest}"`:`data-modal="${dest}"`;return `<header><div><small>${label}</small><h1>${title}</h1></div><button class="ghost" ${attr}>${action}</button></header>`}
 function row(name:string,v:number,id=""){const status=v<60?"Needs attention":v<80?"Developing":"Strong";return `<div class="row" data-concept="${id}"><i></i><div><b>${name}</b><span>${status}</span></div><em><u style="width:${Math.max(0,Math.min(100,v))}%"></u></em><strong>${pct(v)}%</strong></div>`}
@@ -237,12 +489,12 @@ function bindLanding(){
   if(cta){
     cta.onclick=()=>{
       const shell=document.querySelector<HTMLElement>("#landing-shell");
-      if(shell){shell.classList.add("lp-exit");setTimeout(()=>{s.landing=false;render()},500);}
+      if(shell){shell.classList.add("lp-exit");setTimeout(()=>{s.landing=false;render()},520);}
       else{s.landing=false;render();}
     };
   }
 
-  // Rotating feature phrase slider (now uses .lp-phrase)
+  // Rotating feature phrase slider
   const slider=document.querySelector<HTMLElement>("#landing-feature-slider");
   if(slider){
     const words=slider.querySelectorAll<HTMLElement>(".lp-phrase");
@@ -250,11 +502,12 @@ function bindLanding(){
     const cycle=()=>{
       words[current].classList.remove("active");
       words[current].classList.add("exit");
-      setTimeout(()=>{words[current].classList.remove("exit")},440);
+      setTimeout(()=>{words[current].classList.remove("exit")},460);
       current=(current+1)%words.length;
       words[current].classList.add("active");
     };
-    (window as any).__landingSliderInterval=setInterval(cycle,2600);
+    if((window as any).__landingSliderInterval) clearInterval((window as any).__landingSliderInterval);
+    (window as any).__landingSliderInterval=setInterval(cycle,2800);
   }
 
   // Auto-cycling demo reel
@@ -267,66 +520,132 @@ function bindLanding(){
     const dots=document.querySelectorAll<HTMLElement>(".lp-dot");
     const label=document.querySelector<HTMLElement>("#lp-screen-label");
     screens.forEach((sc,i)=>{
-      sc.classList.remove("lp-screen-active","lp-screen-exit");
-      if(i===currentScreen&&i!==idx)sc.classList.add("lp-screen-exit");
+      if(i===currentScreen&&i!==idx){sc.classList.add("lp-screen-exit");sc.classList.remove("lp-screen-active");}
+      else if(i!==idx){sc.classList.remove("lp-screen-active","lp-screen-exit");}
     });
-    setTimeout(()=>{
-      screens.forEach((sc,i)=>{sc.classList.remove("lp-screen-active","lp-screen-exit");if(i===idx)sc.classList.add("lp-screen-active");});
-    },30);
-    dots.forEach((d,i)=>d.classList.toggle("active",i===idx));
+    requestAnimationFrame(()=>{
+      screens.forEach((sc,i)=>{
+        if(i===idx){sc.classList.add("lp-screen-active");sc.classList.remove("lp-screen-exit");}
+        else if(i===currentScreen){setTimeout(()=>sc.classList.remove("lp-screen-exit"),560);}
+      });
+    });
+    dots.forEach((d,i)=>{
+      d.classList.toggle("active",i===idx);
+      d.setAttribute("aria-selected",String(i===idx));
+    });
     if(label)label.textContent=screenLabels[idx];
     currentScreen=idx;
+    // typing animation on screen 1
     if(idx===1){
       const target=document.querySelector<HTMLElement>("#lp-typing");
       if(target){
         target.textContent="";
         const text="It connects two tables, like a link.";
         let ci=0;
-        const type=()=>{if(!document.querySelector("#lp-typing"))return;if(ci<text.length){target.textContent=text.slice(0,++ci);typingTimer=setTimeout(type,50);}};
-        typingTimer=setTimeout(type,700);
+        if(typingTimer)clearTimeout(typingTimer);
+        const type=()=>{
+          if(!document.querySelector("#lp-typing"))return;
+          if(ci<text.length){target.textContent=text.slice(0,++ci);typingTimer=setTimeout(type,52);}
+        };
+        typingTimer=setTimeout(type,750);
       }
-    } else {if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}}
+    }else{if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}}
   }
 
   document.querySelectorAll<HTMLElement>(".lp-dot").forEach(d=>{
-    d.onclick=()=>{const idx=Number(d.dataset.dot||0);if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}showScreen(idx);resetReelTimer();};
+    d.onclick=()=>{
+      const idx=Number(d.dataset.dot||0);
+      if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}
+      showScreen(idx);
+      resetReelTimer();
+    };
   });
 
-  let reelTimer:ReturnType<typeof setInterval>;
-  const startReelTimer=()=>{reelTimer=setInterval(()=>{showScreen((currentScreen+1)%4);},3400);};
-  const resetReelTimer=()=>{clearInterval(reelTimer);startReelTimer();};
+  if((window as any).__landingReelTimer)clearInterval((window as any).__landingReelTimer);
+  let reelTimer:ReturnType<typeof setInterval>|undefined;
+  const startReelTimer=()=>{reelTimer=setInterval(()=>{showScreen((currentScreen+1)%4);},3600);};
+  const resetReelTimer=()=>{if(reelTimer!==undefined)clearInterval(reelTimer);startReelTimer();};
   startReelTimer();
   (window as any).__landingReelTimer=reelTimer;
 
-  // Star-field canvas
+  // Enhanced star-field canvas
   const canvas=document.querySelector<HTMLCanvasElement>("#landing-particles");
   if(canvas){
     const ctx=canvas.getContext("2d");
     if(!ctx)return;
     const resize=()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;};
     resize();
-    window.addEventListener("resize",resize);
-    type P={x:number;y:number;r:number;vx:number;vy:number;a:number;va:number;};
+    const resizeObs=new ResizeObserver(resize);
+    resizeObs.observe(canvas.parentElement||document.body);
+
+    type P={x:number;y:number;r:number;vx:number;vy:number;a:number;va:number;hue:number};
     const pts:P[]=[];
-    for(let i=0;i<110;i++){
-      pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.2,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.15,a:Math.random()*.55+.08,va:(Math.random()-.5)*.003});
+    // 140 particles: mix of white-ish and purple-tinted
+    for(let i=0;i<140;i++){
+      const isPurple=Math.random()<.45;
+      pts.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*1.6+0.15,
+        vx:(Math.random()-.5)*.14,
+        vy:(Math.random()-.5)*.12,
+        a:Math.random()*.55+.06,
+        va:(Math.random()-.5)*.0025,
+        hue:isPurple?265+Math.random()*40:0 // 0 = white
+      });
     }
     let raf:number;
     const draw=()=>{
-      if(!document.querySelector("#landing-particles")){cancelAnimationFrame(raf);return;}
+      if(!document.querySelector("#landing-particles")){cancelAnimationFrame(raf);resizeObs.disconnect();return;}
       ctx.clearRect(0,0,canvas.width,canvas.height);
       for(const p of pts){
         p.x+=p.vx;p.y+=p.vy;p.a+=p.va;
-        if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
-        if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
-        if(p.a<.05)p.va=Math.abs(p.va);if(p.a>.6)p.va=-Math.abs(p.va);
+        if(p.x<-2)p.x=canvas.width+2;if(p.x>canvas.width+2)p.x=-2;
+        if(p.y<-2)p.y=canvas.height+2;if(p.y>canvas.height+2)p.y=-2;
+        if(p.a<.04)p.va=Math.abs(p.va);if(p.a>.62)p.va=-Math.abs(p.va);
         ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(200,180,255,${p.a})`;ctx.fill();
+        if(p.hue>0){
+          ctx.fillStyle=`hsla(${p.hue},80%,75%,${p.a})`;
+        }else{
+          ctx.fillStyle=`rgba(235,225,255,${p.a})`;
+        }
+        ctx.fill();
       }
       raf=requestAnimationFrame(draw);
     };
     draw();
   }
+}
+function bindAuthCanvas(){
+  const canvas=document.querySelector<HTMLCanvasElement>("#auth-particles");
+  if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  if(!ctx)return;
+  const resize=()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;};
+  resize();
+  window.addEventListener("resize",resize);
+  type P={x:number;y:number;r:number;vx:number;vy:number;a:number;va:number;hue:number};
+  const pts:P[]=[];
+  for(let i=0;i<90;i++){
+    const isPurple=Math.random()<.5;
+    pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.4+0.15,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.1,a:Math.random()*.5+.06,va:(Math.random()-.5)*.002,hue:isPurple?265+Math.random()*40:0});
+  }
+  let raf:number;
+  const draw=()=>{
+    if(!document.querySelector("#auth-particles")){cancelAnimationFrame(raf);return;}
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(const p of pts){
+      p.x+=p.vx;p.y+=p.vy;p.a+=p.va;
+      if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+      if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+      if(p.a<.04)p.va=Math.abs(p.va);if(p.a>.55)p.va=-Math.abs(p.va);
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.hue>0?`hsla(${p.hue},80%,75%,${p.a})`:`rgba(235,225,255,${p.a})`;
+      ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  };
+  draw();
 }
 function bind(){
   document.querySelectorAll<HTMLElement>("[data-auth-switch]").forEach(x=>x.onclick=()=>{s.authMode=x.dataset.authSwitch as "login"|"signup";s.authError="";render()});
@@ -371,6 +690,6 @@ function bind(){
 }
 function toast(message:string){s.toast=message;render();window.setTimeout(()=>{if(s.toast===message){s.toast="";render()}},3200)}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&s.modal){s.modal=null;render()}});
-function render(){document.body.classList.toggle("dark",s.darkMode);if(s.booting){app.innerHTML=`<div class="boot"><div class="logo big">L</div><h2>Loading your learning profile…</h2></div>`;return}if(!s.authenticated){app.innerHTML=authScreen();bind();return}if(s.landing){app.innerHTML=landingPage();bindLanding();return}app.innerHTML=`<div class="shell">${side()}<main>${s.view==="dashboard"?dashboard():s.view==="learn"?learn():s.view==="progress"?progress():s.view==="summary"?summary():s.view==="plan"?plan():s.view==="profile"?profile():s.view==="intelligence"?intelligence():history()}</main></div>${modal()}${s.toast?`<div class="toast" role="status"><span>✦</span>${s.toast}</div>`:""}`;bind()}
+function render(){document.body.classList.toggle("dark",s.darkMode);if(s.booting){app.innerHTML=`<div class="boot"><div class="logo big">L</div><h2>Loading your learning profile…</h2></div>`;return}if(!s.authenticated){app.innerHTML=authScreen();bind();bindAuthCanvas();return}if(s.landing){app.innerHTML=landingPage();bindLanding();return}app.innerHTML=`<div class="shell">${side()}<main>${s.view==="dashboard"?dashboard():s.view==="learn"?learn():s.view==="progress"?progress():s.view==="summary"?summary():s.view==="plan"?plan():s.view==="profile"?profile():s.view==="intelligence"?intelligence():history()}</main></div>${modal()}${s.toast?`<div class="toast" role="status"><span>✦</span>${s.toast}</div>`:""}`;bind()}
 async function boot(reload=false){s.booting=!reload;render();try{const pr=await apiFetch(`${API}/api/profile`);if(pr.status===401){s.authenticated=false;s.booting=false;render();return}const p=await readJson(pr);s.authenticated=true;s.name=p.user?.name||"Student";s.grade=p.user?.grade||"College";s.goal=p.user?.goal||"Build strong understanding";s.preferred_input=p.user?.preferred_input||"Text";s.attempts=Number(p.attempts||0);s.mastery=p.mastery||{};s.map=p.concepts||[];const hResponse=await apiFetch(`${API}/api/history`);const h=await readJson(hResponse);s.history=h.items||[]}catch{}s.booting=false;if(s.authenticated&&!reload){s.landing=true}render()}
 boot();
