@@ -6,8 +6,8 @@ type Q = { type:string; question:string; hint:string; focus:string; concept?:str
 type D = { is_correct:boolean; concept:string; concept_label:string; misconception:boolean; misconception_id:string|null; confidence_assessment:string; summary:string; explanation:string; recovery:string; next_question:string; mastery_signal:number; mode?:string; old_mastery?:number; new_mastery?:number; adaptive_next?:Q };
 type SessionSignal={correct:boolean;confidence:string;misconception:boolean;concept:string;label:string};
 
-type State={authenticated:boolean;authMode:"login"|"signup";authName:string;authEmail:string;authPassword:string;authError:string;modal:View|null;view:View;topic:Topic;q:Q|null;answer:string;confidence:string;d:D|null;mastery:Record<string,number>;attempts:number;name:string;grade:string;goal:string;preferred_input:string;history:any[];loading:boolean;booting:boolean;map:any[];session:SessionSignal[];sessionStarted:number;sessionTarget:number;demoMode:boolean;toast:string};
-const s:State={authenticated:false,authMode:"login",authName:"",authEmail:"",authPassword:"",authError:"",modal:null,view:"dashboard",topic:"dbms",q:null,answer:"",confidence:"",d:null,mastery:{},attempts:0,name:"Student",grade:"College",goal:"Build strong understanding",preferred_input:"Text",history:[],loading:false,booting:true,map:[],session:[],sessionStarted:0,sessionTarget:3,demoMode:false,toast:""};
+type State={authenticated:boolean;landing:boolean;darkMode:boolean;authMode:"login"|"signup";authName:string;authEmail:string;authPassword:string;authError:string;modal:View|null;view:View;topic:Topic;q:Q|null;answer:string;confidence:string;d:D|null;mastery:Record<string,number>;attempts:number;name:string;grade:string;goal:string;preferred_input:string;history:any[];loading:boolean;booting:boolean;map:any[];session:SessionSignal[];sessionStarted:number;sessionTarget:number;demoMode:boolean;toast:string};
+const s:State={authenticated:false,landing:false,darkMode:localStorage.getItem("lb_dark")==="1",authMode:"login",authName:"",authEmail:"",authPassword:"",authError:"",modal:null,view:"dashboard",topic:"dbms",q:null,answer:"",confidence:"",d:null,mastery:{},attempts:0,name:"Student",grade:"College",goal:"Build strong understanding",preferred_input:"Text",history:[],loading:false,booting:true,map:[],session:[],sessionStarted:0,sessionTarget:3,demoMode:false,toast:""};
 const app=document.querySelector("#app")!;
 const API=(import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:8787" : window.location.origin)).replace(/\/$/, "");
 const readJson = async (response: Response) => {
@@ -52,11 +52,95 @@ function peerReasoning(concept:string){
   const peers=peerBank[concept]||peerBank.primary_key;
   return `<section class="peer-reasoning panel"><div class="peer-head"><div><small>ANONYMOUS PEER REASONING</small><h3>How other learners approached this</h3><p>Names and profiles stay hidden. Compare the reasoning, not the person.</p></div><span class="peer-lock">🔒 Anonymous</span></div><div class="peer-grid">${peers.map((item,i)=>`<article class="peer-card"><div class="peer-card-top"><span class="peer-avatar">A${i+1}</span><span class="peer-label">Anonymous learner</span><span class="peer-signal ${item.signal.includes("Common")?"warn":item.signal.includes("Partially")||item.signal.includes("Partial")?"mid":"good"}">${item.signal}</span></div><p class="peer-answer">“${item.reasoning}”</p><button class="peer-notice" data-peer="${i}">Notice the reasoning →</button><div class="peer-note" id="peer-note-${i}" hidden>${item.note}</div></article>`).join("")}</div><div class="peer-reflect"><div><b>What did you notice?</b><span>Use another learner's reasoning to strengthen your own explanation.</span></div><button class="peer-reflect-btn" data-peer-reflect>Revise my reasoning →</button></div></section>`;
 }
+function landingPage(){return `<div class="lp" id="landing-shell">
+  <canvas class="lp-stars" id="landing-particles"></canvas>
+  <div class="lp-sphere lp-s1"></div>
+  <div class="lp-sphere lp-s2"></div>
+  <div class="lp-sphere lp-s3"></div>
+  <div class="lp-sphere lp-s4"></div>
+  <div class="lp-sphere lp-s5"></div>
+  <div class="lp-sphere lp-s6"></div>
+  <div class="lp-grid-bg"></div>
+  <div class="lp-waves-wrap">
+    <svg viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="lp-wave lp-wave-1" d="M0,100 C200,160 400,40 720,100 C1040,160 1240,40 1440,100 L1440,180 L0,180 Z"/>
+      <path class="lp-wave lp-wave-2" d="M0,130 C280,70 560,170 840,120 C1080,80 1300,150 1440,120 L1440,180 L0,180 Z"/>
+      <path class="lp-wave lp-wave-3" d="M0,152 C360,122 620,178 920,145 C1150,118 1360,162 1440,150 L1440,180 L0,180 Z"/>
+    </svg>
+  </div>
+  <nav class="lp-nav">
+    <div class="lp-brand">
+      <span class="lp-brand-icon">L</span>
+      <div><strong>LearnBack</strong><small>adaptive learning</small></div>
+    </div>
+    <span class="lp-ai-pill">✦ AI-Powered</span>
+  </nav>
+  <div class="lp-hero">
+    <div class="lp-left">
+      <div class="lp-kicker-wrap"><span class="lp-kicker">Adaptive • Intelligent • Personal</span></div>
+      <h1 class="lp-h1">
+        <span class="lp-h1-line lp-h1-l1">Learn Smarter.</span>
+        <span class="lp-h1-line lp-h1-l2"><span class="lp-grad">Remember</span> Forever.</span>
+      </h1>
+      <p class="lp-desc">Your AI-powered adaptive learning companion that understands you, personalizes your learning, and helps you master anything.</p>
+      <div class="lp-phrase-row">
+        <span class="lp-phrase-dot"></span>
+        <div class="lp-phrase-track" id="landing-feature-slider">
+          <span class="lp-phrase active">Understand deeply.</span>
+          <span class="lp-phrase">Recall effortlessly.</span>
+          <span class="lp-phrase">Grow continuously.</span>
+        </div>
+      </div>
+      <button class="lp-cta" id="landing-cta">
+        <span class="lp-cta-bg"></span>
+        <span class="lp-cta-text">Start Your Study Journey</span>
+        <span class="lp-cta-arr">→</span>
+      </button>
+      <div class="lp-feat-cards">
+        <div class="lp-fc"><span class="lp-fc-icon">🧠</span><strong>Adaptive Learning</strong><small>Personalized for you</small></div>
+        <div class="lp-fc"><span class="lp-fc-icon">⚡</span><strong>Smart Recall</strong><small>AI-powered memory</small></div>
+        <div class="lp-fc"><span class="lp-fc-icon">◎</span><strong>Concept Mastery</strong><small>Track &amp; improve</small></div>
+        <div class="lp-fc"><span class="lp-fc-icon">🎯</span><strong>Confidence Boost</strong><small>Learn with clarity</small></div>
+      </div>
+    </div>
+    <div class="lp-right">
+      <div class="lp-demo-card">
+        <div class="lp-demo-top">
+          <span class="lp-demo-dot lp-dr"></span><span class="lp-demo-dot lp-dy"></span><span class="lp-demo-dot lp-dg"></span>
+          <span class="lp-demo-lbl">✦ See LearnBack in Action</span>
+        </div>
+        <div class="lp-demo-body" id="lp-demo-reel">
+          <div class="lp-screen lp-screen-active" data-screen="0">
+            <div class="lp-preview"><div class="lp-sb"><div class="lp-sb-logo">L</div><div class="lp-sb-links"><span class="lp-sb-active"></span><span></span><span></span><span></span><span></span></div></div><div class="lp-pm"><div class="lp-pm-hdr"><div><div class="lp-xs-tag">LEARNING OVERVIEW</div><div class="lp-sm-h">Good to see you, Rahul.</div></div><div class="lp-ring-xs"><span>74%</span></div></div><div class="lp-4s"><div class="lp-si"><span>42</span><small>Signals</small></div><div class="lp-si"><span>7</span><small>Concepts</small></div><div class="lp-si lp-si-a"><span>74%</span><small>Mastery</small></div><div class="lp-si lp-si-w"><span>3</span><small>Errors</small></div></div><div class="lp-2col"><div class="lp-mp"><div class="lp-ptag">KNOWLEDGE MAP</div><div class="lp-brow" style="--w:82%"><span>Primary Key</span><em></em></div><div class="lp-brow" style="--w:55%"><span>Foreign Key</span><em></em></div><div class="lp-brow lp-brow-r" style="--w:38%"><span>Polymorphism</span><em></em></div></div><div class="lp-mp lp-mp-i"><div class="lp-ptag">AI INSIGHT</div><div class="lp-star-xs">✦</div><div class="lp-ins-txt">3 high-confidence errors to revisit.</div><div class="lp-mini-chip">Answer → Diagnose → Adapt</div></div></div></div></div>
+          </div>
+          <div class="lp-screen" data-screen="1">
+            <div class="lp-qscreen"><div class="lp-qhdr"><span class="lp-qtag">ADAPTIVE QUESTION</span><span class="lp-qlvl">Level 1 · Personalized</span></div><div class="lp-qtxt">What is the purpose of a primary key in a database table?</div><div class="lp-qhint">Explain it in your own words.</div><div class="lp-qbox"><span id="lp-typing"></span><span class="lp-qcursor" id="lp-cursor">|</span></div><div class="lp-confrow"><span class="lp-cl">Confidence:</span><span class="lp-cb">Not sure</span><span class="lp-cb">Somewhat</span><span class="lp-cb lp-cb-on">Very confident</span></div></div>
+          </div>
+          <div class="lp-screen" data-screen="2">
+            <div class="lp-dscreen"><div class="lp-dalert"><span class="lp-dico">!</span><div><div class="lp-dtag">MISCONCEPTION DETECTED</div><div class="lp-dtit">Primary key confused with foreign key.</div></div></div><div class="lp-dpipe"><div class="lp-ds lp-ds-ok"><span>1</span><b>Captured</b></div><div class="lp-da">→</div><div class="lp-ds lp-ds-ok"><span>2</span><b>Diagnosed</b></div><div class="lp-da">→</div><div class="lp-ds lp-ds-on"><span>3</span><b>Adapting</b></div></div><div class="lp-2col"><div class="lp-mp"><div class="lp-ptag">SIGNAL</div><div class="lp-dr-row"><span>Correct</span><b class="lp-red">Needs work</b></div><div class="lp-dr-row"><span>Confidence</span><b class="lp-red">Very confident</b></div><div class="lp-dr-row"><span>Misconception</span><b class="lp-red">pk_fk</b></div></div><div class="lp-mp lp-mp-r"><div class="lp-ptag">NEXT ACTION</div><div class="lp-rec">Targeted recovery question selected.</div><div class="lp-mbar"><span>Primary Key</span><div class="lp-mtrack"><div class="lp-mfill" style="--from:62%;--to:48%"></div></div><span class="lp-red">62%→48%</span></div></div></div></div>
+          </div>
+          <div class="lp-screen" data-screen="3">
+            <div class="lp-kscreen"><div class="lp-khdr"><div><div class="lp-xs-tag">CONCEPT GRAPH</div><div class="lp-sm-h">Your knowledge map</div></div><div class="lp-ktot">74%<small>overall</small></div></div><div class="lp-kgraph"><div class="lp-knode lp-kn-s" style="left:14%;top:42%"><span>82%</span><b>Primary Key</b></div><div class="lp-knode lp-kn-d" style="left:41%;top:24%"><span>55%</span><b>Foreign Key</b></div><div class="lp-knode lp-kn-w" style="left:67%;top:44%"><span>38%</span><b>Polymorphism</b></div><div class="lp-knode lp-kn-d" style="left:29%;top:68%"><span>61%</span><b>Normalization</b></div><div class="lp-kline" style="left:19%;top:44%;width:23%;transform:rotate(-10deg)"></div><div class="lp-kline" style="left:45%;top:35%;width:23%;transform:rotate(12deg)"></div></div><div class="lp-kleg"><span class="lp-ks">● Strong</span><span class="lp-kd">● Developing</span><span class="lp-kw">● Needs work</span></div></div>
+          </div>
+        </div>
+        <div class="lp-dots" id="lp-screen-dots">
+          <span class="lp-dot active" data-dot="0"></span>
+          <span class="lp-dot" data-dot="1"></span>
+          <span class="lp-dot" data-dot="2"></span>
+          <span class="lp-dot" data-dot="3"></span>
+        </div>
+        <div class="lp-scr-lbl" id="lp-screen-label">Dashboard Overview</div>
+        <div class="lp-demo-foot"><span>🔒 Private</span><span>⚡ Instant</span><span>🎯 Adaptive</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="lp-scroll-ind"><span>Scroll to explore</span><div class="lp-scroll-arr">↓</div></div>
+</div>`}
 function authScreen(){return `<div class="auth-shell"><div class="auth-brand"><b class="logo">L</b><div><strong>LearnBack</strong><small>adaptive learning</small></div></div><div class="auth-card"><div class="auth-kicker">YOUR LEARNING SPACE</div><h1>${s.authMode==="login"?"Welcome back.":"Create your learning profile."}</h1><p>${s.authMode==="login"?"Sign in to continue with your personal knowledge map and learning history.":"Start a personal learning journey. Your progress stays linked to your account."}</p>${s.authError?`<div class="auth-error">${s.authError}</div>`:""}${s.authMode==="signup"?`<label class="auth-field"><span>Your name</span><input id="auth-name" placeholder="e.g. Rahul" value="${s.authName}"></label>`:""}<label class="auth-field"><span>Email</span><input id="auth-email" type="email" placeholder="you@example.com" value="${s.authEmail}"></label><label class="auth-field"><span>Password</span><input id="auth-password" type="password" placeholder="${s.authMode==="signup"?"At least 6 characters":"Your password"}" value="${s.authPassword}"></label>${s.authMode==="signup"?`<div class="auth-note">Your account unlocks a separate profile, mastery map and history.</div>`:""}<button class="primary auth-submit" id="auth-submit">${s.authMode==="login"?"Log in →":"Create account →"}</button><div class="auth-switch">${s.authMode==="login"?`New to LearnBack? <button data-auth-switch="signup">Create an account</button>`:`Already have an account? <button data-auth-switch="login">Log in</button>`}</div></div><div class="auth-foot">LearnBack • Understand. Adapt. Improve.</div></div>`}
-async function authSubmit(){s.authError="";const email=(document.querySelector<HTMLInputElement>("#auth-email")?.value||"").trim();const password=document.querySelector<HTMLInputElement>("#auth-password")?.value||"";const name=document.querySelector<HTMLInputElement>("#auth-name")?.value.trim()||"";s.authEmail=email;s.authPassword=password;s.authName=name;if(s.authMode==="signup"&&name.length<2){s.authError="Please enter your name.";render();return}if(!/^\S+@\S+\.\S+$/.test(email)){s.authError="Please enter a valid email.";render();return}if(password.length<6){s.authError="Password must be at least 6 characters.";render();return}try{const r=await fetch(`${API}/api/${s.authMode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(s.authMode==="signup"?{name,email,password}:{email,password})});const data=await readJson(r);if(!r.ok)throw new Error((data && data.error) || "Authentication failed");localStorage.setItem("learnback_session",data.token);s.authenticated=true;s.authError="";s.authPassword="";await boot(true)}catch(e:any){s.authError=e.message||"Could not sign in.";render()}}
+async function authSubmit(){s.authError="";const email=(document.querySelector<HTMLInputElement>("#auth-email")?.value||"").trim();const password=document.querySelector<HTMLInputElement>("#auth-password")?.value||"";const name=document.querySelector<HTMLInputElement>("#auth-name")?.value.trim()||"";s.authEmail=email;s.authPassword=password;s.authName=name;if(s.authMode==="signup"&&name.length<2){s.authError="Please enter your name.";render();return}if(!/^\S+@\S+\.\S+$/.test(email)){s.authError="Please enter a valid email.";render();return}if(password.length<6){s.authError="Password must be at least 6 characters.";render();return}try{const r=await fetch(`${API}/api/${s.authMode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(s.authMode==="signup"?{name,email,password}:{email,password})});const data=await readJson(r);if(!r.ok)throw new Error((data && data.error) || "Authentication failed");localStorage.setItem("learnback_session",data.token);s.authenticated=true;s.authError="";s.authPassword="";s.landing=true;await boot(true)}catch(e:any){s.authError=e.message||"Could not sign in.";render()}}
 function header(label:string,title:string,action:string,v:View,target?:View){const dest=target||v;const attr=dest==="learn"?`data-v="${dest}"`:`data-modal="${dest}"`;return `<header><div><small>${label}</small><h1>${title}</h1></div><button class="ghost" ${attr}>${action}</button></header>`}
 function row(name:string,v:number,id=""){const status=v<60?"Needs attention":v<80?"Developing":"Strong";return `<div class="row" data-concept="${id}"><i></i><div><b>${name}</b><span>${status}</span></div><em><u style="width:${Math.max(0,Math.min(100,v))}%"></u></em><strong>${pct(v)}%</strong></div>`}
-function side(){return `<aside><div class="brand" data-modal="dashboard"><b class="logo">L</b><div><strong>LearnBack</strong><small>adaptive learning</small></div></div><nav><button data-modal="dashboard">⌂ <span>Overview</span></button><button data-v="learn">✦ <span>Learn</span></button><button data-modal="progress">◔ <span>Knowledge map</span></button><button data-modal="intelligence">🧠 <span>Learning Intelligence</span></button><button data-modal="classroom">◎ <span>Classroom copilot</span></button><button data-modal="subjects">＋ <span>Subjects</span></button><button data-modal="plan">✦ <span>Learning plan</span></button><button data-modal="history">↺ <span>History</span></button><button data-modal="profile">◉ <span>My profile</span></button></nav><div class="bottom"><div class="signal"><small>TODAY</small><b>${s.attempts} learning signals</b><span>Stored in your local database.</span></div><div class="user"><i>${s.name[0]?.toUpperCase()||"S"}</i><div><b>${s.name}</b><small>${s.grade}</small></div></div></div></aside>`}
+function side(){return `<aside><div class="brand" data-modal="dashboard"><b class="logo">L</b><div><strong>LearnBack</strong><small>adaptive learning</small></div></div><nav><button data-modal="dashboard">⌂ <span>Overview</span></button><button data-v="learn">✦ <span>Learn</span></button><button data-modal="progress">◔ <span>Knowledge map</span></button><button data-modal="intelligence">🧠 <span>Learning Intelligence</span></button><button data-modal="classroom">◎ <span>Classroom copilot</span></button><button data-modal="subjects">＋ <span>Subjects</span></button><button data-modal="plan">✦ <span>Learning plan</span></button><button data-modal="history">↺ <span>History</span></button><button data-modal="profile">◉ <span>My profile</span></button></nav><div class="bottom"><div class="signal"><small>TODAY</small><b>${s.attempts} learning signals</b><span>Stored in your local database.</span></div><button class="dm-toggle" id="dm-toggle" title="Toggle dark mode"><span class="dm-icon">${s.darkMode?"☀":"🌙"}</span><span class="dm-label">${s.darkMode?"Light mode":"Dark mode"}</span></button><div class="user"><i>${s.name[0]?.toUpperCase()||"S"}</i><div><b>${s.name}</b><small>${s.grade}</small></div></div></div></aside>`}
 function dashboard(){const vals=Object.values(s.mastery);const overall=vals.length?vals.reduce((a,b)=>a+Number(b),0)/vals.length:62;const weak=Object.entries(s.mastery).sort((a,b)=>a[1]-b[1]).slice(0,3);const high=s.history.filter(x=>x.misconception&&String(x.confidence).toLowerCase().includes("confident")).length;const correct=s.history.filter(x=>x.is_correct).length;const insight=high?`You have ${high} high-confidence error${high>1?"s":""} to revisit. LearnBack will target them instead of restarting the whole topic.`:"Confidence is a learning signal. Answer naturally, then tell LearnBack how sure you felt.";return `${header("LEARNING OVERVIEW",`Good to see you, ${s.name}.`,"Learning Intelligence","intelligence")}<section class="hero"><div><small>LEARNBACK RECOMMENDS</small><h2>${high?"Let's repair a misconception.":"Let's find what you need next."}</h2><p>LearnBack uses your answer, confidence, history and concept mastery to decide the next learning move.</p><div class="hero-actions"><button class="primary" data-start="dbms">Start adaptive session →</button><button class="demo-btn" data-demo="1">▶ Run 60-sec demo</button><button class="hero-link" data-start="java">Try Java OOP</button><button class="hero-link" data-modal="subjects">Browse subjects</button><button class="hero-link" data-v="plan">View today's plan</button></div></div><div class="orb"><span>${pct(overall)}%</span><small>profile</small></div></section><div class="stats"><div><small>LEARNING SIGNALS</small><b>${s.attempts}</b><span>Saved locally</span></div><div><small>CONCEPTS TRACKED</small><b>${Object.keys(s.mastery).length||7}</b><span>Across your profile</span></div><div><small>UNDERSTANDING</small><b>${pct(overall)}%</b><span>Current estimate</span></div><div><small>HIGH-CONFIDENCE ERRORS</small><b>${high}</b><span>Being targeted</span></div></div><div class="grid"><section class="panel"><div class="head"><div><small>KNOWLEDGE MAP</small><h3>Where you stand</h3></div><button class="link" data-v="progress">Open map</button></div>${weak.length?weak.map(x=>row(conceptLabel(x[0]),x[1],x[0])).join(""):row("Primary Key",42,"primary_key")+row("Foreign Key",68,"foreign_key")+row("Polymorphism",51,"polymorphism")}</section><section class="panel insight"><small>LEARNER INSIGHT</small><div class="star">✦</div><h3>${high?"Your confidence pattern matters.":"Confidence is a learning signal."}</h3><p>${insight}</p><div class="insight-pill">Answer → Diagnose → Adapt → Re-test</div></section></div><div class="section"><small>CONTINUE LEARNING</small><h3>Choose a learning track</h3></div><div class="topics"><button data-start="dbms"><i>DB</i><div><b>Database Keys</b><span>DBMS • misconception recovery</span></div><strong>${pct(s.mastery.primary_key??42)}%</strong></button><button data-start="java"><i>JV</i><div><b>OOP Basics</b><span>Java • concept progression</span></div><strong>${pct(s.mastery.encapsulation??74)}%</strong></button><button data-start="python"><i>PY</i><div><b>Python Foundations</b><span>Python • adaptive concept recovery</span></div><strong>${pct(s.mastery.lists??50)}%</strong></button></div>`}
 function learn(){if(s.d)return diagnosis();const q=s.q;if(!q)return `<section class="loading-card panel"><div class="spinner"></div><h2>Building your next question…</h2><p>LearnBack is checking your current knowledge state.</p></section>`;const canVoice="SpeechRecognition" in window||"webkitSpeechRecognition" in window;return `${header(s.topic==="dbms"?"DBMS • DATABASE KEYS":s.topic==="java"?"JAVA • OOP BASICS":"PYTHON • FOUNDATIONS","Adaptive learning session","Exit","dashboard")}<div class="session-top"><span>Session ${s.session.length+1} of ${s.sessionTarget}</span><em><u style="width:${Math.min(100,(s.session.length/s.sessionTarget)*100)}%"></u></em>${s.demoMode?`<span class="demo-chip">DEMO STORY</span>`:""}<button class="mini" data-v="summary">End session</button></div><div class="session"><section class="panel question"><div class="step"><span>Adaptive question</span><em><u style="width:${Math.min(92,25+s.attempts%4*18)}%"></u></em><span>${q.difficulty?`Level ${q.difficulty}`:"Personalized"}</span></div><div class="question-meta"><small class="tag">${q.type}</small><small class="reason">${q.reason||"Selected from your knowledge state"}</small></div><h2>${q.question}</h2><p>${q.hint}</p><div class="answer-wrap"><textarea id="answer" placeholder="Write your answer naturally...">${s.answer}</textarea>${canVoice?`<button class="voice" id="voice">🎙 Voice answer</button>`:`<small class="voice-note">Voice input is not supported by this browser.</small>`}</div>${s.demoMode?`<div class="demo-strip"><div><b>Hackathon demo</b><span>Show a high-confidence misconception in one click.</span></div><button class="demo-fill" data-fill-demo>Fill sample answer</button></div>`:""}<div class="confidence"><div><b>How confident are you?</b><span>This lets LearnBack distinguish uncertainty from confident misconceptions.</span></div><div>${["Not sure","Somewhat","Confident","Very confident"].map(x=>`<button data-c="${x}" class="${s.confidence===x?"selected":""}">${x}</button>`).join("")}</div></div><div class="actions"><button class="primary" id="submit" ${!s.answer.trim()||!s.confidence||s.loading?"disabled":""}>${s.loading?"Analyzing learning signal…":"Analyze my answer →"}</button></div></section><aside class="side"><div class="sidecard focus-card"><small>CURRENT FOCUS</small><div class="focus-icon">◎</div><h3>${q.focus}</h3><p>Target selected from the learner's current knowledge state, not a fixed quiz sequence.</p></div><div class="sidecard"><small>LEARNBACK LOOP</small><div class="mini-flow"><span>Answer</span><b>→</b><span>Diagnose</span><b>→</b><span>Adapt</span></div><p>Every response becomes a learning signal.</p></div><div class="sidecard signal-card"><small>SESSION SIGNALS</small><b>${s.session.length}</b><span>answers captured</span><div class="signal-dots">${Array.from({length:s.sessionTarget},(_,i)=>`<i class="${i<s.session.length?(s.session[i]?.correct?"ok":"bad"):""}"></i>`).join("")}</div></div></aside></div>`}
 function diagnosis(){const d=s.d!;return `${header("LEARNBACK DIAGNOSIS",d.misconception?"A misconception needs repair.":"Understanding signal detected.",s.session.length>=s.sessionTarget?"See session report":"Continue","learn")}<section class="result ${d.is_correct?"good":"attention"}"><i>${d.is_correct?"✓":"!"}</i><div><small>${d.is_correct?"UNDERSTANDING CONFIRMED":"MISCONCEPTION / GAP DETECTED"} • ${d.mode==="ai"?"AI":"LOCAL ENGINE"}</small><h2>${d.summary}</h2><p>${d.explanation}</p></div></section><div class="diagnosis-pipeline"><div class="done"><span>1</span><b>Answer captured</b><small>Natural response + confidence</small></div><div class="done"><span>2</span><b>Signal diagnosed</b><small>${d.misconception?"Misconception detected":"Understanding checked"}</small></div><div class="next-step"><span>3</span><b>Next move</b><small>Targeted ${s.session.length>=s.sessionTarget?"session report":"re-test"}</small></div></div><div class="diagnosis-grid"><section class="panel"><small>WHAT LEARNBACK SAW</small><h3>${d.concept_label}</h3><div class="signals"><div><span>Correctness</span><b>${d.is_correct?"Correct":"Needs work"}</b></div><div><span>Confidence assessment</span><b>${d.confidence_assessment}</b></div><div><span>Misconception</span><b>${d.misconception?d.misconception_id||"Detected":"Not detected"}</b></div></div><div class="box"><b>Recovery explanation</b><p>${d.recovery}</p></div></section><section class="panel recovery"><small>NEXT BEST ACTION</small><h3>Target the exact concept.</h3><div class="next"><i>1</i><div><b>Recovery</b><p>${d.recovery}</p></div></div><div class="next"><i>2</i><div><b>Targeted question</b><p>${d.next_question}</p></div></div><button class="primary" id="continue">${s.session.length>=s.sessionTarget?"View session report →":"Continue adaptive session →"}</button></section></div><div class="update"><div><span>${d.concept_label}</span><small>mastery update</small></div><b>${pct(d.old_mastery??50)}% → ${pct(d.new_mastery??50)}</b></div>${peerReasoning(d.concept)}`}
@@ -147,10 +231,108 @@ function subjects(){const cards=[{id:"dbms",code:"DB",name:"Database Systems",de
 function modalContent(v:View){if(v==="intelligence")return intelligence();if(v==="classroom")return classroom();if(v==="progress")return progress();if(v==="plan")return plan();if(v==="history")return history();if(v==="profile")return profile();if(v==="subjects")return subjects();return dashboard()}
 function modal(){if(!s.modal)return "";const title=s.modal==="intelligence"?"Learning Intelligence":s.modal==="classroom"?"AI Classroom Copilot":s.modal==="progress"?"Knowledge map":s.modal==="plan"?"Learning plan":s.modal==="history"?"History":s.modal==="profile"?"My profile":s.modal==="subjects"?"Subjects":"Overview";return `<div class="modal-overlay" id="modal-overlay"><div class="modal-sheet" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-bar"><div><span class="modal-dot"></span><b>${title}</b></div><button class="modal-close" id="modal-close" aria-label="Close">×</button></div><div class="modal-content">${modalContent(s.modal)}</div></div></div>`}
 
+function bindLanding(){
+  // CTA → fade out then show dashboard
+  const cta=document.querySelector<HTMLButtonElement>("#landing-cta");
+  if(cta){
+    cta.onclick=()=>{
+      const shell=document.querySelector<HTMLElement>("#landing-shell");
+      if(shell){shell.classList.add("lp-exit");setTimeout(()=>{s.landing=false;render()},500);}
+      else{s.landing=false;render();}
+    };
+  }
+
+  // Rotating feature phrase slider (now uses .lp-phrase)
+  const slider=document.querySelector<HTMLElement>("#landing-feature-slider");
+  if(slider){
+    const words=slider.querySelectorAll<HTMLElement>(".lp-phrase");
+    let current=0;
+    const cycle=()=>{
+      words[current].classList.remove("active");
+      words[current].classList.add("exit");
+      setTimeout(()=>{words[current].classList.remove("exit")},440);
+      current=(current+1)%words.length;
+      words[current].classList.add("active");
+    };
+    (window as any).__landingSliderInterval=setInterval(cycle,2600);
+  }
+
+  // Auto-cycling demo reel
+  const screenLabels=["Dashboard Overview","Adaptive Question","AI Diagnosis","Knowledge Map"];
+  let currentScreen=0;
+  let typingTimer:ReturnType<typeof setTimeout>|null=null;
+
+  function showScreen(idx:number){
+    const screens=document.querySelectorAll<HTMLElement>(".lp-screen");
+    const dots=document.querySelectorAll<HTMLElement>(".lp-dot");
+    const label=document.querySelector<HTMLElement>("#lp-screen-label");
+    screens.forEach((sc,i)=>{
+      sc.classList.remove("lp-screen-active","lp-screen-exit");
+      if(i===currentScreen&&i!==idx)sc.classList.add("lp-screen-exit");
+    });
+    setTimeout(()=>{
+      screens.forEach((sc,i)=>{sc.classList.remove("lp-screen-active","lp-screen-exit");if(i===idx)sc.classList.add("lp-screen-active");});
+    },30);
+    dots.forEach((d,i)=>d.classList.toggle("active",i===idx));
+    if(label)label.textContent=screenLabels[idx];
+    currentScreen=idx;
+    if(idx===1){
+      const target=document.querySelector<HTMLElement>("#lp-typing");
+      if(target){
+        target.textContent="";
+        const text="It connects two tables, like a link.";
+        let ci=0;
+        const type=()=>{if(!document.querySelector("#lp-typing"))return;if(ci<text.length){target.textContent=text.slice(0,++ci);typingTimer=setTimeout(type,50);}};
+        typingTimer=setTimeout(type,700);
+      }
+    } else {if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}}
+  }
+
+  document.querySelectorAll<HTMLElement>(".lp-dot").forEach(d=>{
+    d.onclick=()=>{const idx=Number(d.dataset.dot||0);if(typingTimer){clearTimeout(typingTimer);typingTimer=null;}showScreen(idx);resetReelTimer();};
+  });
+
+  let reelTimer:ReturnType<typeof setInterval>;
+  const startReelTimer=()=>{reelTimer=setInterval(()=>{showScreen((currentScreen+1)%4);},3400);};
+  const resetReelTimer=()=>{clearInterval(reelTimer);startReelTimer();};
+  startReelTimer();
+  (window as any).__landingReelTimer=reelTimer;
+
+  // Star-field canvas
+  const canvas=document.querySelector<HTMLCanvasElement>("#landing-particles");
+  if(canvas){
+    const ctx=canvas.getContext("2d");
+    if(!ctx)return;
+    const resize=()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;};
+    resize();
+    window.addEventListener("resize",resize);
+    type P={x:number;y:number;r:number;vx:number;vy:number;a:number;va:number;};
+    const pts:P[]=[];
+    for(let i=0;i<110;i++){
+      pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.2,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.15,a:Math.random()*.55+.08,va:(Math.random()-.5)*.003});
+    }
+    let raf:number;
+    const draw=()=>{
+      if(!document.querySelector("#landing-particles")){cancelAnimationFrame(raf);return;}
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const p of pts){
+        p.x+=p.vx;p.y+=p.vy;p.a+=p.va;
+        if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+        if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+        if(p.a<.05)p.va=Math.abs(p.va);if(p.a>.6)p.va=-Math.abs(p.va);
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(200,180,255,${p.a})`;ctx.fill();
+      }
+      raf=requestAnimationFrame(draw);
+    };
+    draw();
+  }
+}
 function bind(){
   document.querySelectorAll<HTMLElement>("[data-auth-switch]").forEach(x=>x.onclick=()=>{s.authMode=x.dataset.authSwitch as "login"|"signup";s.authError="";render()});
   document.querySelector("#auth-submit")?.addEventListener("click",authSubmit);
   document.querySelector<HTMLInputElement>("#auth-password")?.addEventListener("keydown",e=>{if(e.key==="Enter")authSubmit()});
+  document.querySelector("#dm-toggle")?.addEventListener("click",()=>{s.darkMode=!s.darkMode;localStorage.setItem("lb_dark",s.darkMode?"1":"0");render()});
   document.querySelectorAll<HTMLElement>("[data-modal]").forEach(x=>x.onclick=()=>{const target=x.dataset.modal as View;if(target==="dashboard"){s.modal=null;s.view="dashboard";render();return}s.modal=target;render()});
   document.querySelectorAll<HTMLElement>("[data-v]").forEach(x=>x.onclick=()=>{const target=x.dataset.v as View;if(target==="learn"){s.modal=null;start(s.topic);return}s.modal=null;s.view=target;render()});
   document.querySelector("#modal-close")?.addEventListener("click",()=>{s.modal=null;render()});
@@ -189,6 +371,6 @@ function bind(){
 }
 function toast(message:string){s.toast=message;render();window.setTimeout(()=>{if(s.toast===message){s.toast="";render()}},3200)}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&s.modal){s.modal=null;render()}});
-function render(){if(s.booting){app.innerHTML=`<div class="boot"><div class="logo big">L</div><h2>Loading your learning profile…</h2></div>`;return}if(!s.authenticated){app.innerHTML=authScreen();bind();return}app.innerHTML=`<div class="shell">${side()}<main>${s.view==="dashboard"?dashboard():s.view==="learn"?learn():s.view==="progress"?progress():s.view==="summary"?summary():s.view==="plan"?plan():s.view==="profile"?profile():s.view==="intelligence"?intelligence():history()}</main></div>${modal()}${s.toast?`<div class="toast" role="status"><span>✦</span>${s.toast}</div>`:""}`;bind()}
-async function boot(reload=false){s.booting=!reload;render();try{const pr=await apiFetch(`${API}/api/profile`);if(pr.status===401){s.authenticated=false;s.booting=false;render();return}const p=await readJson(pr);s.authenticated=true;s.name=p.user?.name||"Student";s.grade=p.user?.grade||"College";s.goal=p.user?.goal||"Build strong understanding";s.preferred_input=p.user?.preferred_input||"Text";s.attempts=Number(p.attempts||0);s.mastery=p.mastery||{};s.map=p.concepts||[];const hResponse=await apiFetch(`${API}/api/history`);const h=await readJson(hResponse);s.history=h.items||[]}catch{}s.booting=false;render()}
+function render(){document.body.classList.toggle("dark",s.darkMode);if(s.booting){app.innerHTML=`<div class="boot"><div class="logo big">L</div><h2>Loading your learning profile…</h2></div>`;return}if(!s.authenticated){app.innerHTML=authScreen();bind();return}if(s.landing){app.innerHTML=landingPage();bindLanding();return}app.innerHTML=`<div class="shell">${side()}<main>${s.view==="dashboard"?dashboard():s.view==="learn"?learn():s.view==="progress"?progress():s.view==="summary"?summary():s.view==="plan"?plan():s.view==="profile"?profile():s.view==="intelligence"?intelligence():history()}</main></div>${modal()}${s.toast?`<div class="toast" role="status"><span>✦</span>${s.toast}</div>`:""}`;bind()}
+async function boot(reload=false){s.booting=!reload;render();try{const pr=await apiFetch(`${API}/api/profile`);if(pr.status===401){s.authenticated=false;s.booting=false;render();return}const p=await readJson(pr);s.authenticated=true;s.name=p.user?.name||"Student";s.grade=p.user?.grade||"College";s.goal=p.user?.goal||"Build strong understanding";s.preferred_input=p.user?.preferred_input||"Text";s.attempts=Number(p.attempts||0);s.mastery=p.mastery||{};s.map=p.concepts||[];const hResponse=await apiFetch(`${API}/api/history`);const h=await readJson(hResponse);s.history=h.items||[]}catch{}s.booting=false;if(s.authenticated&&!reload){s.landing=true}render()}
 boot();
